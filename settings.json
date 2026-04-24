@@ -43,7 +43,10 @@
                 "face": "CaskaydiaCove Nerd Font",
                 "size": 12
             },
-            "colorScheme": "One Half Dark"
+            "colorScheme": "One Half Dark",
+            "padding": "25, 25, 25, 25",
+            "useAcrylic": true,
+            "acrylicOpacity": 0.75
         },
         "list": [
             {
