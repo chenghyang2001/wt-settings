@@ -6,6 +6,11 @@
     "copyOnSelect": false,
     "defaultProfile": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
     "theme": "dark",
+    "firstWindowPreference": "persistedWindowLayout",
+    "tabWidthMode": "titleLength",
+    "centerOnLaunch": true,
+    "wordDelimiters": " ()\"'-,;<>~!@#$%^&*|+=[]{}~?│",
+    "multiLinePasteWarning": true,
     "keybindings": [
         {
             "id": "Terminal.CopyToClipboard",
@@ -30,6 +35,46 @@
         {
             "id": "Terminal.ToggleSplitOrientation",
             "keys": "alt+r"
+        },
+        {
+            "id": "Terminal.MoveFocusLeft",
+            "keys": "alt+left"
+        },
+        {
+            "id": "Terminal.MoveFocusRight",
+            "keys": "alt+right"
+        },
+        {
+            "id": "Terminal.MoveFocusUp",
+            "keys": "alt+up"
+        },
+        {
+            "id": "Terminal.MoveFocusDown",
+            "keys": "alt+down"
+        },
+        {
+            "id": "Terminal.ResizePaneLeft",
+            "keys": "alt+shift+left"
+        },
+        {
+            "id": "Terminal.ResizePaneRight",
+            "keys": "alt+shift+right"
+        },
+        {
+            "id": "Terminal.ResizePaneUp",
+            "keys": "alt+shift+up"
+        },
+        {
+            "id": "Terminal.ResizePaneDown",
+            "keys": "alt+shift+down"
+        },
+        {
+            "id": "Terminal.TogglePaneZoom",
+            "keys": "alt+z"
+        },
+        {
+            "id": "Terminal.MarkMode",
+            "keys": "ctrl+shift+m"
         }
     ],
     "newTabMenu": [
@@ -48,7 +93,19 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.75,
             "cursorColor": "#FFCC00",
-            "cursorShape": "filledBox"
+            "cursorShape": "filledBox",
+            "historySize": 100000,
+            "unfocusedAppearance": {
+                "opacity": 70,
+                "useAcrylic": true
+            },
+            "bellStyle": [
+                "taskbar",
+                "window"
+            ],
+            "suppressApplicationTitle": false,
+            "initialCols": 140,
+            "initialRows": 40
         },
         "list": [
             {
@@ -95,5 +152,5 @@
     },
     "schemes": [],
     "themes": [],
-    "warning.confirmCloseAllTabs": false
+    "warning.confirmCloseAllTabs": true
 }

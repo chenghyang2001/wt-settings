@@ -88,3 +88,48 @@ wt-settings.ico  ← 由 make_icon.py 產生
 **關鍵互斥規則**：`useAcrylic: true` 和 `backgroundImage` 不可同時啟用 — DWM 模糊合成管線（抓桌面像素模糊）和 GPU 貼圖走不同 render path，WT 強制二選一。若未來改用背景圖，必須先把 `useAcrylic` 設 `false`，再加 `backgroundImage` / `backgroundImageOpacity` / `backgroundImageStretchMode` 三個屬性（PDF 第 9 頁）。
 
 **屬性放置慣例**：跨所有 profile 共用的屬性（字型、padding、acrylic）放在 `profiles.defaults`；單一 profile 才需要的（startingDirectory、icon）放在該 profile 本身。
+
+## Claude Code CLI 工作流配置（2026-04-24 套用）
+
+主要使用情境：3 windows × 3-4 panes 同時跑多個 Claude Code 專案 / sub-agents 觀測。設計目標 = **觀測台模式**（不丟失 + 知道焦點 + 知道完工 + 快速切換）。
+
+### 上下文管理
+- `profiles.defaults.historySize: 100000` — Claude 對話超長，預設 9001 行不夠
+- `keybindings: Terminal.MarkMode (ctrl+shift+m)` — 鍵盤滾動 scrollback，免用滑鼠
+
+### Pane 操作（觀測多 agent 必備）
+- `Terminal.MoveFocus{Left,Right,Up,Down}` 綁 `alt+方向鍵` — pane 焦點切換
+- `Terminal.ResizePane{Left,Right,Up,Down}` 綁 `alt+shift+方向鍵` — 動態調整 pane 大小
+- `Terminal.TogglePaneZoom` 綁 `alt+z` — 暫時放大單一 pane 全螢幕，再按一次回到 multi-pane
+
+### 視覺辨識（多 windows / 多 panes 場景）
+- `profiles.defaults.unfocusedAppearance.opacity: 70` — 非焦點 pane 半透明，當前 pane 一目了然
+- `tabWidthMode: "titleLength"` — tab 寬度依標題伸縮，不再擠成一團
+
+### 完工通知
+- `profiles.defaults.bellStyle: ["taskbar", "window"]` — Claude 跑完長任務時工作列圖示閃爍 + 視窗閃爍，不在 WT 視窗也能注意到
+
+### 視窗持久化（救命符）
+- `firstWindowPreference: "persistedWindowLayout"` — WT 當機/重開自動還原全部 windows + tabs + panes 布局
+- `warning.confirmCloseAllTabs: true` — 防止 `Ctrl+Shift+W` 誤關 12 panes
+
+### 內容操作
+- `wordDelimiters: " ()\"'-,;<>~!@#$%^&*|+=[]{}~?│"` — 移除 `/`、`\`、`.`、`:` 後雙擊路徑/URL 整段選起（Claude 對話常出現的 `app/auth/middleware.py` 一次選好）
+- `multiLinePasteWarning: true` — 多行貼上會警告，避免從 Claude 對話複製 `rm -rf` 直接執行
+
+### 啟動行為
+- `profiles.defaults.initialCols: 140` / `initialRows: 40` — 視窗預設大小固定，3 windows 並排不會大小不一
+- `centerOnLaunch: true` — 視窗居中啟動
+
+### 快速參考：本 repo 已自訂的所有快捷鍵
+
+| 鍵 | 動作 |
+|---|---|
+| `Ctrl+C` / `Ctrl+V` | 複製 / 貼上 |
+| `Alt+Shift+D` | 自動拆分 pane |
+| `Alt+R` | 切換 pane 分割方向 |
+| `Alt+N` / `Alt+P` | 下/上一個 tab |
+| `Alt+方向鍵` | pane 焦點移動 |
+| `Alt+Shift+方向鍵` | pane 大小調整 |
+| `Alt+Z` | pane 暫時全螢幕 |
+| `Ctrl+Shift+M` | 進入 mark mode（鍵盤滾動 scrollback） |
