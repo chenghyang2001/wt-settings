@@ -57,6 +57,36 @@ cp settings.json "$LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe
 - Ubuntu (WSL)
 - Azure Cloud Shell
 
+## 單 tab 快速啟動三件套
+
+仿 S189 的 5-tab 配色系統，本專案額外提供一個 teal-cyan 🟦🟢 配色的單 tab 啟動器。
+
+| 檔案 | 用途 |
+|------|------|
+| `claude-wt-1-tab-wt-settings.bat` | 開一個 WT tab，cd 到本目錄，`claude --continue -n wt-settings`（具名 session） |
+| `wt-settings.ico` | 6 解析度 multi-res icon（16/32/48/64/128/256），teal `{ }` 代表 JSON 設定 |
+| `make_icon.py` | 重新生成 ICO（改色或字樣時用） |
+| `wt-settings.lnk`（未 commit） | Windows 捷徑；target 指 `cmd.exe` + `WindowStyle=7` 才可右鍵釘工作列（Windows 1903+ 拔 `.bat` 的 pin verb） |
+
+### 重建 .lnk（換機時）
+
+```powershell
+$sh = New-Object -ComObject WScript.Shell
+$lnk = $sh.CreateShortcut("$env:USERPROFILE\workspace\wt-settings\wt-settings.lnk")
+$lnk.TargetPath       = "$env:SystemRoot\System32\cmd.exe"
+$lnk.Arguments        = "/c `"$env:USERPROFILE\workspace\wt-settings\claude-wt-1-tab-wt-settings.bat`""
+$lnk.WorkingDirectory = "$env:USERPROFILE\workspace\wt-settings"
+$lnk.IconLocation     = "$env:USERPROFILE\workspace\wt-settings\wt-settings.ico,0"
+$lnk.WindowStyle      = 7
+$lnk.Description      = "Claude Code @ wt-settings (single tab)"
+$lnk.Save()
+```
+
+### 釘到工作列
+
+1. 右鍵 `wt-settings.lnk` → 複製 → 貼到桌面（或任意位置）
+2. 右鍵桌面捷徑 → **釘選到工作列** / **釘選到開始畫面**
+
 ## 相關
 
 - [Microsoft Docs — Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/)
