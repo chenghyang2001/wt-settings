@@ -81,8 +81,8 @@ wt-settings.ico  ← 由 make_icon.py 產生
 | `padding`（內部留白） | ✅ 已套用 | `"25, 25, 25, 25"`（PDF 舒適型） |
 | `useAcrylic` / `acrylicOpacity` | ✅ 已套用 | `true` / `0.75` |
 | `defaultProfile` | ✅ 保留 cmd | `{0caa0dad-35be-5f56-a8ff-afceeeaa6101}`（與 bat `cmd /k` 工作列釘選一致） |
-| `cursorColor` / `cursorShape` | ⏸ 暫不做 | 如要改：PDF 範例 `#FFCC00` + `filledBox` |
-| `startingDirectory`（非 Git Bash） | ⏸ 暫不做 | 可加 `%USERPROFILE%\workspace` 到 PowerShell / cmd profile |
+| `cursorColor` / `cursorShape` | ✅ 已套用 | `#FFCC00` / `filledBox`（放 `profiles.defaults`，全 profile 共用） |
+| `startingDirectory`（PowerShell / cmd） | ✅ 已套用 | `%USERPROFILE%\workspace`（Git Bash 仍維持 `%USERPROFILE%`） |
 | `backgroundImage` 三件組 | ❌ 互斥排除 | 已選 Acrylic，兩者不可並存 |
 
 **關鍵互斥規則**：`useAcrylic: true` 和 `backgroundImage` 不可同時啟用 — DWM 模糊合成管線（抓桌面像素模糊）和 GPU 貼圖走不同 render path，WT 強制二選一。若未來改用背景圖，必須先把 `useAcrylic` 設 `false`，再加 `backgroundImage` / `backgroundImageOpacity` / `backgroundImageStretchMode` 三個屬性（PDF 第 9 頁）。
