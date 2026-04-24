@@ -74,7 +74,7 @@ wt-settings.ico  ← 由 make_icon.py 產生
 
 ## 未來擴展清單（來自 PDF《打造專屬的 Windows Terminal — JSON 設定檔視覺化完全指南》）
 
-下表對照 PDF cheat sheet 建議的屬性與本 repo 目前狀態，供未來調整參考。
+原始 PDF 在 `pdf/Windows_Terminal_JSON_Blueprint.pdf`（10 頁，含 cheat sheet）。下表對照 PDF 建議的屬性與本 repo 目前狀態，供未來調整參考。
 
 | PDF 建議屬性 | 狀態 | 決策 / 值 |
 |---|---|---|
