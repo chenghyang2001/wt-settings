@@ -2,6 +2,32 @@
 
 Windows Terminal `settings.json` 備份與版本控制。
 
+## 新 PC 設定
+
+```bash
+# 1. clone repo
+git clone https://github.com/chenghyang2001/wt-settings ~/workspace/wt-settings
+
+# 2. bootstrap：apply.sh 自動偵測 + 部署 + 安裝 /wt-sync slash command
+bash ~/workspace/wt-settings/apply.sh
+
+# 3. （可選）重建工作列 .lnk（gitignored，每台機器需各自重建）
+powershell -ExecutionPolicy Bypass -File ~/workspace/wt-settings/regen-lnk.ps1
+
+# 4. 從 nerdfonts.com 下載 CaskaydiaCove Nerd Font 並「為所有使用者安裝」
+#    apply.sh 偵測缺失時會印警告
+```
+
+之後在該 PC 的 Claude Code 內就能用：
+
+```
+/wt-sync                  # 自動 git pull + 套用最新設定
+/wt-sync --dry-run        # 預覽會發生什麼，不動真檔
+/wt-sync --regen-lnk      # 順便重建工作列 .lnk
+```
+
+設計細節（兩件式架構、孤兒 profile 偵測、5 份備份輪替等）見 [CLAUDE.md](CLAUDE.md)。
+
 ## 來源路徑
 
 Windows Terminal 穩定版會讀取：
