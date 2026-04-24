@@ -72,9 +72,76 @@ wt-settings.ico  ← 由 make_icon.py 產生
 
 修改流程：**先改 WT（GUI 或直接編 LocalState 的檔）→ WT hot-reload 驗證無誤 → 再 `cp` 進 repo commit**。不要反過來先改 repo 版本再 copy 過去（會跳過 WT 的 schema 驗證）。
 
+## 跨 PC 同步：`apply.sh` + `/wt-sync`
+
+兩件式架構，新 PC 設定 + 日常更新都用同一套：
+
+| 檔案 | 用途 |
+|---|---|
+| `apply.sh` | 核心部署腳本，可獨立跑（不需 Claude） |
+| `regen-lnk.ps1` | 重建工作列釘選用 .lnk（gitignored） |
+| `.claude/commands/wt-sync.md` | Claude Code slash command 來源（apply.sh 會自動 cp 到 `~/.claude/commands/`） |
+
+### 新 PC bootstrap 流程
+
+```bash
+# 1. clone
+git clone https://github.com/chenghyang2001/wt-settings ~/workspace/wt-settings
+
+# 2. 跑 apply.sh（自動偵測 + 部署 + 安裝 slash command）
+bash ~/workspace/wt-settings/apply.sh
+
+# 3. （可選）重建工作列 .lnk
+powershell -ExecutionPolicy Bypass -File ~/workspace/wt-settings/regen-lnk.ps1
+
+# 4. 安裝 CaskaydiaCove Nerd Font（apply.sh 偵測缺失會提示）
+#    從 nerdfonts.com 下載 → 為所有使用者安裝
+
+# 之後本機 Claude Code 內可以直接用 /wt-sync 拉新版
+```
+
+### `apply.sh` 做了什麼
+
+1. 偵測 WT stable / preview LocalState 路徑
+2. 驗證 source `settings.json` 合法 JSON
+3. 顯示 diff，若無變更則 early-exit（`--dry-run` 在此停止）
+4. 備份 LocalState 現有檔到 `settings.json.bak-YYYYMMDD-HHMMSS`
+5. cp 新設定 → LocalState
+6. **自動清理舊備份，保留最近 5 份**
+7. 驗證部署結果 JSON 合法
+8. 檢查 CaskaydiaCove Nerd Font 是否已裝（HKLM + HKCU 兩個 hive）
+9. **精準偵測孤兒 profile**：用 `wsl -l -q` 對照 WSL profile name；用 `which az` 檢查 Azure CLI
+10. 安裝 / 更新 slash command 到 `~/.claude/commands/`
+11. 印出 commit hash + commit message
+
+### `apply.sh` 參數
+
+| 參數 | 用途 |
+|---|---|
+| `--dry-run` | 只顯示會做什麼，不實際 cp |
+| `--no-cmd` | 不安裝 slash command（用於 CI / 測試） |
+| `-h` / `--help` | 顯示 usage |
+
+### `/wt-sync` slash command 流程
+
+`~/.claude/commands/wt-sync.md` 的內容是給 Claude 看的指令，會：
+1. 檢查 repo 是否已 clone（不在則詢問）
+2. 檢查工作樹乾淨（有改動則警告）
+3. `git pull --ff-only`
+4. 跑 `bash apply.sh`（傳遞 `--dry-run` 等參數）
+5. （可選）跑 `regen-lnk.ps1`
+6. 整理 apply.sh 的關鍵輸出回報給使用者
+
+### 關鍵設計決策
+
+- **邏輯與資料同居**：`apply.sh` 在 repo 內，跟著 `settings.json` 一起進 git，永遠版本對齊
+- **slash command 自帶散布**：`apply.sh` 自動 cp `wt-sync.md` 到 `~/.claude/commands/`，新 PC 第一次跑完後續就能用 `/wt-sync`
+- **MSYS / Windows path 混用**：Python `json.tool` 不認 `/c/...` MSYS 路徑 → 用 stdin pipe 繞過；`git -C` 同理 → 用 `cd subshell`
+- **Font 偵測查兩個 hive**：CaskaydiaCove 從 nerdfonts.com 下載通常裝在 HKCU（per-user），只查 HKLM 會誤報未安裝
+
 ## 未來擴展清單（來自 PDF《打造專屬的 Windows Terminal — JSON 設定檔視覺化完全指南》）
 
-原始 PDF 在 `pdf/Windows_Terminal_JSON_Blueprint.pdf`（10 頁，含 cheat sheet）。下表對照 PDF 建議的屬性與本 repo 目前狀態，供未來調整參考。
+原始 PDF 在 `pdf/05-Windows_Terminal_JSON_Blueprint.pdf`（10 頁，含 cheat sheet）。下表對照 PDF 建議的屬性與本 repo 目前狀態，供未來調整參考。
 
 | PDF 建議屬性 | 狀態 | 決策 / 值 |
 |---|---|---|

@@ -18,21 +18,36 @@ C:\Users\<你的帳號>\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3
 
 ## 同步方式
 
-### 從本機推到 repo（備份）
+### 推薦：用 `apply.sh`（一條指令搞定備份 + 部署 + 驗證）
 
 ```bash
-cp "$LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" ~/workspace/wt-settings/settings.json
-cd ~/workspace/wt-settings
-git add settings.json
-git commit -m "更新 WT settings"
-git push
+bash ~/workspace/wt-settings/apply.sh           # 套用最新 settings.json
+bash ~/workspace/wt-settings/apply.sh --dry-run # 只看會發生什麼
 ```
 
-### 從 repo 拉回本機（套用）
+`apply.sh` 自動做：偵測 WT 路徑 → 驗證 JSON → 備份舊檔（保留 5 份）→ cp → 驗證 → 檢查 Nerd Font + 孤兒 profile → 安裝 `/wt-sync` slash command。
 
+### 在 Claude Code 內：用 `/wt-sync`
+
+```
+/wt-sync              # 自動 git pull + apply.sh
+/wt-sync --dry-run    # 預覽
+/wt-sync --regen-lnk  # 順便重建工作列 .lnk
+```
+
+詳細工作流見 `.claude/commands/wt-sync.md` 或 [CLAUDE.md](CLAUDE.md) 的「跨 PC 同步」段落。
+
+### 手動同步（傳統方式）
+
+從本機推到 repo（備份）：
 ```bash
-cd ~/workspace/wt-settings
-git pull
+cp "$LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" ~/workspace/wt-settings/settings.json
+cd ~/workspace/wt-settings && git add settings.json && git commit -m "更新 WT settings" && git push
+```
+
+從 repo 拉回本機（套用）：
+```bash
+cd ~/workspace/wt-settings && git pull
 cp settings.json "$LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
 ```
 
@@ -67,20 +82,15 @@ cp settings.json "$LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe
 | `wt-settings.ico` | 6 解析度 multi-res icon（16/32/48/64/128/256），teal `{ }` 代表 JSON 設定 |
 | `make_icon.py` | 重新生成 ICO（改色或字樣時用） |
 | `wt-settings.lnk`（未 commit） | Windows 捷徑；target 指 `cmd.exe` + `WindowStyle=7` 才可右鍵釘工作列（Windows 1903+ 拔 `.bat` 的 pin verb） |
+| `regen-lnk.ps1` | 一鍵重建上面的 `.lnk`（換機器時用） |
 
 ### 重建 .lnk（換機時）
 
 ```powershell
-$sh = New-Object -ComObject WScript.Shell
-$lnk = $sh.CreateShortcut("$env:USERPROFILE\workspace\wt-settings\wt-settings.lnk")
-$lnk.TargetPath       = "$env:SystemRoot\System32\cmd.exe"
-$lnk.Arguments        = "/c `"$env:USERPROFILE\workspace\wt-settings\claude-wt-1-tab-wt-settings.bat`""
-$lnk.WorkingDirectory = "$env:USERPROFILE\workspace\wt-settings"
-$lnk.IconLocation     = "$env:USERPROFILE\workspace\wt-settings\wt-settings.ico,0"
-$lnk.WindowStyle      = 7
-$lnk.Description      = "Claude Code @ wt-settings (single tab)"
-$lnk.Save()
+powershell -ExecutionPolicy Bypass -File ~/workspace/wt-settings/regen-lnk.ps1
 ```
+
+或在 Claude Code 內：`/wt-sync --regen-lnk`
 
 ### 釘到工作列
 
