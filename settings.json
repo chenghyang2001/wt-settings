@@ -86,7 +86,7 @@
         "defaults": {
             "font": {
                 "face": "CaskaydiaCove Nerd Font",
-                "size": 12
+                "size": 15
             },
             "colorScheme": "One Half Dark",
             "padding": "25, 25, 25, 25",

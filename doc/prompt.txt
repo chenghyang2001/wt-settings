@@ -1,0 +1,35 @@
+# Session 191 Prompts - 2026-04-24
+# wt-settings repo 全套建構：18 項 WT 配置 + apply.sh 跨 PC 同步 + /wt-sync slash command + NotebookLM 文件化 + memory 升級
+
+/rename wt-setting
+/init
+based on this file @c:\Users\B00332\Downloads\Windows_Terminal_JSON_Blueprint.pdf what could be changed in wt mentioned in the file ?
+Q1. 選 B：保持 cmd Q2.  選 A： Q3. PDF 建議 25（舒適型）先把這份對照表補進 CLAUDE.md 當作「未來擴展清單」
+要把改好的 settings.json 同步回 %LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json 讓 WT hot-reload 看到效果
+要 git add + commit + push 這次改動  commit message：新增 padding/acrylic 設定 + CLAUDE.md 未來擴展清單
+A. 加進 repo
+summarize this file @C:\Users\B00332\workspace\wt-settings\pdf\01-The_Ultimate_Terminal_Stack.pdf
+summarize https://youtu.be/AK2JE2YsKto
+do demo from https://youtu.be/AK2JE2YsKto
+what do you think ? is it worthy to install starship ? search for starship and find out its rating and comment. think hard and go.
+no. not install for now. earlier you suggest several content for me about wt.exe show me
+1. 要把 startingDirectory: %USERPROFILE%\workspace 加到 cmd 和 PowerShell profile 2. do cursorColor / cursorShape（游標自訂）
+the main purpose and use of wt.exe for me is to use it for claude code cli. based on this fact, suggest 10-20 most useful wt config or setting for this operation. i at most will have 3 windows for different claude code project in different folders. within one windows, there may be 3-4 panels to observe multiple agents status. think hard and show me your suggestion.
+套用全套 18 項一起上
+要 用 update-config skill 把這個 hook 也加上
+先不動. now say I have the latest wt.exe config json file on github repo. and later I will use another PC. create a slash command or skill so that I could use the command to apply the latest wt config setting for the new PC. think hard and show me plan first.
+要 按這個計畫實作 : 1  - 是否要包含 --dry-run 模式 要 2. 備份保留幾份合適（我建議 5） 5 3.要把 wt-sync.md 也放 repo 裡（方便新 PC 設定） 4. you decide. think hard and go
+for the 新 PC 使用指南 ... can they be found in readme or else ? if not , write to file such as readme or else.
+for the 新增 Claude Code 多 agent 觀測台 WT 配置（18 項）, create a doc file about the 18 項 ... then create a new notebooklm and use it as source and then create its studio files. think hard and go.
+A. 你在本 session 直接重新認證 done
+[image: agent mind map] keep this important rule in your memory. from now on, as long as it is about notebooklm tasks ... always assign my agent 愛學習小腦 in sub-agent flow instead of the main agent. also from now on, the VPS do notebooklm task only when the 本機 PC could not do it.
+我建議走方案 1（模組化）...（user 從另一 session 來訊：把 NLM 規則改成 user-level instructions 模組）
+要 現在跑個小測試 派小腦下載剛才那 5 個完成的 artifact
+@gp find wt.exe shortcut for pane operation
+where can i find ：Explore agent 寫「8 個快捷鍵」但表格列了 11 個（正確數字） 完整答案以表格為準
+C. 新建 doc/keybindings-cheatsheet.md     │ 專屬 cheatsheet 檔，可以印出來貼螢幕邊    show the full path in windows format
+what is the current font size of this wt console
+change the font size to 16pt on setting json file
+font size 改回 14 in setting file
+font size 改 15 in setting file
+/end-session

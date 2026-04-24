@@ -7,3 +7,6 @@ Thumbs.db
 # Windows shortcut 含機器特定絕對路徑，換機後重建
 wt-settings.lnk
 
+
+# NotebookLM downloaded artifacts (60+ MB, regenerable)
+doc/studio/
