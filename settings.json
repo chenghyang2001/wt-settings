@@ -2,19 +2,27 @@
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
     "actions": [],
+    "centerOnLaunch": true,
     "copyFormatting": "none",
     "copyOnSelect": false,
     "defaultProfile": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-    "theme": "dark",
     "firstWindowPreference": "persistedWindowLayout",
-    "tabWidthMode": "titleLength",
-    "centerOnLaunch": true,
-    "wordDelimiters": " ()\"'-,;<>~!@#$%^&*|+=[]{}~?│",
-    "multiLinePasteWarning": true,
     "keybindings": [
+        {
+            "id": "Terminal.ToggleSplitOrientation",
+            "keys": "alt+r"
+        },
+        {
+            "id": "Terminal.PrevTab",
+            "keys": "alt+p"
+        },
         {
             "id": "Terminal.CopyToClipboard",
             "keys": "ctrl+c"
+        },
+        {
+            "id": "Terminal.MoveFocusRight",
+            "keys": "alt+right"
         },
         {
             "id": "Terminal.PasteFromClipboard",
@@ -29,20 +37,8 @@
             "keys": "alt+n"
         },
         {
-            "id": "Terminal.PrevTab",
-            "keys": "alt+p"
-        },
-        {
-            "id": "Terminal.ToggleSplitOrientation",
-            "keys": "alt+r"
-        },
-        {
             "id": "Terminal.MoveFocusLeft",
             "keys": "alt+left"
-        },
-        {
-            "id": "Terminal.MoveFocusRight",
-            "keys": "alt+right"
         },
         {
             "id": "Terminal.MoveFocusUp",
@@ -51,6 +47,22 @@
         {
             "id": "Terminal.MoveFocusDown",
             "keys": "alt+down"
+        },
+        {
+            "id": "Terminal.MoveFocusLeft",
+            "keys": "alt+h"
+        },
+        {
+            "id": "Terminal.MoveFocusDown",
+            "keys": "alt+j"
+        },
+        {
+            "id": "Terminal.MoveFocusUp",
+            "keys": "alt+k"
+        },
+        {
+            "id": "Terminal.MoveFocusRight",
+            "keys": "alt+l"
         },
         {
             "id": "Terminal.ResizePaneLeft",
@@ -84,37 +96,35 @@
     ],
     "profiles": {
         "defaults": {
+            "bellStyle": [
+                "window",
+                "taskbar"
+            ],
+            "colorScheme": "One Half Dark",
+            "cursorColor": "#FFCC00",
+            "cursorShape": "filledBox",
             "font": {
                 "face": "CaskaydiaCove Nerd Font",
                 "size": 15
             },
-            "colorScheme": "One Half Dark",
-            "padding": "25, 25, 25, 25",
-            "useAcrylic": true,
-            "acrylicOpacity": 0.75,
-            "cursorColor": "#FFCC00",
-            "cursorShape": "filledBox",
             "historySize": 100000,
+            "opacity": 75,
+            "padding": "25, 25, 25, 25",
+            "suppressApplicationTitle": false,
             "unfocusedAppearance": {
                 "opacity": 70,
                 "useAcrylic": true
             },
-            "bellStyle": [
-                "taskbar",
-                "window"
-            ],
-            "suppressApplicationTitle": false,
-            "initialCols": 140,
-            "initialRows": 40
+            "useAcrylic": true
         },
         "list": [
             {
-                "guid": "{00000000-0000-0000-0000-000000000001}",
-                "name": "Git Bash",
                 "commandline": "C:\\Program Files\\Git\\bin\\bash.exe --login -i",
+                "guid": "{00000000-0000-0000-0000-000000000001}",
+                "hidden": false,
                 "icon": "C:\\Program Files\\Git\\mingw64\\share\\git\\git-for-windows.ico",
-                "startingDirectory": "%USERPROFILE%",
-                "hidden": false
+                "name": "Git Bash",
+                "startingDirectory": "%USERPROFILE%"
             },
             {
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
@@ -151,6 +161,10 @@
         ]
     },
     "schemes": [],
+    "tabWidthMode": "titleLength",
+    "theme": "dark",
     "themes": [],
-    "warning.confirmCloseAllTabs": true
+    "warning.confirmCloseAllTabs": true,
+    "warning.multiLinePaste": "automatic",
+    "wordDelimiters": " ()\"'-,;<>~!@#$%^&*|+=[]{}~?│"
 }
