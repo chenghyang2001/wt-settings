@@ -123,6 +123,29 @@ powershell -ExecutionPolicy Bypass -File ~/workspace/wt-settings/regen-lnk.ps1
 1. 右鍵 `wt-settings.lnk` → 複製 → 貼到桌面（或任意位置）
 2. 右鍵桌面捷徑 → **釘選到工作列** / **釘選到開始畫面**
 
+## CLI Aliases（`bin/`）
+
+跨 PC 共用的命令列 alias（cmd / PowerShell / Git Bash 通用）：
+
+| Alias | 指令 |
+|-------|------|
+| `by` | `claude --continue --permission-mode bypassPermissions %*` — 接續上次對話 + 跳過權限提示 |
+
+新 PC 部署：
+
+```bash
+mkdir -p "$HOME/bin"
+cp ~/workspace/wt-settings/bin/*.bat "$HOME/bin/"
+# 若 ~/bin 不在 PATH 上，開 PowerShell：
+#   $bin = "$env:USERPROFILE\bin"
+#   $up  = [Environment]::GetEnvironmentVariable("Path","User")
+#   if (";$up;" -notlike "*;$bin;*") {
+#       [Environment]::SetEnvironmentVariable("Path","$up;$bin","User")
+#   }
+```
+
+詳細設計與新增 alias 的 SOP 見 [doc/wt-launchers-index.md 第 7 節](doc/wt-launchers-index.md#7-cli-aliasesbin)。
+
 ## 相關
 
 - [Microsoft Docs — Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/)

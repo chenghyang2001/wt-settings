@@ -101,6 +101,51 @@ $lnk.Save()
 1. 關所有既有 tab（或整個 WT 視窗）
 2. 雙擊 .lnk 重啟 → 新 keybindings 生效
 
+## 7. CLI Aliases（`bin/`）
+
+跨 PC 共用的命令列 alias 集中在 `bin/`，每個 PC 部署一次到 `~/bin/`（已在 PATH 上）後就能在 cmd / PowerShell / Git Bash 通用。
+
+| Alias | 對應指令 | 用途 |
+|-------|---------|------|
+| `by` | `claude --continue --permission-mode bypassPermissions %*` | 一鍵接續上次對話且跳過權限提示，最常用於日常 hacking |
+
+### 部署到新 PC（一次性）
+
+```bash
+# 1. 確保 ~/bin 存在且在 PATH
+mkdir -p "$HOME/bin"
+
+# 2. 把 repo 的 bin/* 同步過去
+cp ~/workspace/wt-settings/bin/*.bat "$HOME/bin/"
+
+# 3. （若是新 PC）把 ~/bin 加入 user PATH
+#    Git Bash 的 PATH 已自動含 ~/bin；只有 cmd/PowerShell 需要 setx
+#    若沒在 PATH：開 PowerShell 跑下面這段（不需 admin）
+#    $bin = "$env:USERPROFILE\bin"
+#    $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+#    if (";$userPath;" -notlike "*;$bin;*") {
+#        [Environment]::SetEnvironmentVariable("Path", "$userPath;$bin", "User")
+#    }
+```
+
+> 💡 設計選擇：alias 沒走 `apply.sh` 自動部署（避免 `.sh` 改動觸發 writer-qa-reviewer 鐵律）。若日後 alias 數量多到值得自動化，再加一個 `sync_bin()` 函式進 `apply.sh` 並走完整三 agent 流程。
+
+### 為什麼放 repo 而不只放 `~/bin/`
+
+| 比較 | 只放 `~/bin/` | 放 repo `bin/` |
+|------|--------------|---------------|
+| 跨 PC 同步 | 手動 cp 三次 | `git pull` 自動 |
+| 版本歷史 | 無 | git log 完整紀錄 |
+| 修改溯源 | 不知道是誰改的 | commit message 留證 |
+| 衝突風險 | 各機器各自分歧 | merge 逼你面對 |
+
+### 新增 alias 的 SOP
+
+1. 在 repo `bin/` 新建 `<name>.bat`（純 ASCII + CRLF + `@echo off` 開頭）
+2. 因為 `.bat` 在鐵律清單，要走 **code-writer → code-qa**（看 `~/.claude/instructions/writer-qa-iron-rule.md`）
+3. 更新本文件第 7 節的 alias 表格
+4. 各 PC 跑 `cp ~/workspace/wt-settings/bin/*.bat "$HOME/bin/"` 同步
+
 ## 參考
 
 - [WT command-line arguments](https://learn.microsoft.com/en-us/windows/terminal/command-line-arguments)
