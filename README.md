@@ -41,10 +41,17 @@ powershell -ExecutionPolicy Bypass -File regen-lnk.ps1
 
 `apply.bat` 與 `apply.sh` 對標：同樣會做「source 檢查 → JSON 驗證 → 備份輪替 5 份 → cp → 驗證」7 步驟。差別只是 .bat 沒做字型/孤兒 profile 檢查（apply.sh 額外加分項目）。
 
-之後在該 PC 的 Claude Code 內就能用：
+之後在該 PC 上更新 WT settings，三種方式擇一：
+
+| 觸發點 | 指令 | 適用情境 |
+|---|---|---|
+| **桌面雙擊** | `wt-sync.bat`（路徑 B 也適用） | 不開 Claude Code 也能跑；最快 |
+| **Claude Code 內** | `/wt-sync` | 已開 session、要驗收 + 通知 |
+| **cmd 手動** | `cd repo && git pull && apply.bat` | 想看每一步 |
+
+`/wt-sync` 進階：
 
 ```
-/wt-sync                  # 自動 git pull + 套用最新設定
 /wt-sync --dry-run        # 預覽會發生什麼，不動真檔
 /wt-sync --regen-lnk      # 順便重建工作列 .lnk
 ```
