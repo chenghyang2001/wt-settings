@@ -1,7 +1,12 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions": [],
+    "actions": [
+        {
+            "id": "User.SplitPaneDupAlt",
+            "command": { "action": "splitPane", "split": "auto", "splitMode": "duplicate" }
+        }
+    ],
     "centerOnLaunch": true,
     "copyFormatting": "none",
     "copyOnSelect": false,
@@ -22,10 +27,6 @@
             "keys": "ctrl+c"
         },
         {
-            "id": "Terminal.MoveFocusRight",
-            "keys": "alt+right"
-        },
-        {
             "id": "Terminal.PasteFromClipboard",
             "keys": "ctrl+v"
         },
@@ -34,20 +35,12 @@
             "keys": "alt+shift+d"
         },
         {
+            "id": "User.SplitPaneDupAlt",
+            "keys": "alt+s"
+        },
+        {
             "id": "Terminal.NextTab",
             "keys": "alt+n"
-        },
-        {
-            "id": "Terminal.MoveFocusLeft",
-            "keys": "alt+left"
-        },
-        {
-            "id": "Terminal.MoveFocusUp",
-            "keys": "alt+up"
-        },
-        {
-            "id": "Terminal.MoveFocusDown",
-            "keys": "alt+down"
         },
         {
             "id": "Terminal.MoveFocusLeft",
@@ -88,6 +81,10 @@
         {
             "id": "Terminal.TogglePaneZoom",
             "keys": "alt+z"
+        },
+        {
+            "id": "Terminal.ClosePane",
+            "keys": "alt+e"
         },
         {
             "id": "Terminal.MarkMode",
