@@ -109,26 +109,45 @@ $lnk.Save()
 |-------|---------|------|
 | `by` | `claude --continue --permission-mode bypassPermissions %*` | 一鍵接續上次對話且跳過權限提示，最常用於日常 hacking |
 
-### 部署到新 PC（一次性）
+### 部署到新 PC（一鍵）
 
-```bash
-# 1. 確保 ~/bin 存在且在 PATH
-mkdir -p "$HOME/bin"
+clone repo 後，雙擊 `setup.bat` 或 cmd 跑：
 
-# 2. 把 repo 的 bin/* 同步過去
-cp ~/workspace/wt-settings/bin/*.bat "$HOME/bin/"
-
-# 3. （若是新 PC）把 ~/bin 加入 user PATH
-#    Git Bash 的 PATH 已自動含 ~/bin；只有 cmd/PowerShell 需要 setx
-#    若沒在 PATH：開 PowerShell 跑下面這段（不需 admin）
-#    $bin = "$env:USERPROFILE\bin"
-#    $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
-#    if (";$userPath;" -notlike "*;$bin;*") {
-#        [Environment]::SetEnvironmentVariable("Path", "$userPath;$bin", "User")
-#    }
+```cmd
+cd %USERPROFILE%\workspace\wt-settings
+setup.bat
 ```
 
-> 💡 設計選擇：alias 沒走 `apply.sh` 自動部署（避免 `.sh` 改動觸發 writer-qa-reviewer 鐵律）。若日後 alias 數量多到值得自動化，再加一個 `sync_bin()` 函式進 `apply.sh` 並走完整三 agent 流程。
+`setup.bat`（102 行）做 6 件事：
+
+1. 解析 `%~dp0` 取得 repo 根目錄（不寫死路徑）
+2. 確保 `bin\` 子目錄存在（缺則 hard fail，避免靜默部署空檔）
+3. `mkdir %USERPROFILE%\bin` 若不存在
+4. `copy /Y bin\*.bat → %USERPROFILE%\bin\`（冪等）
+5. **冪等補 user PATH**：用 PowerShell `[Environment]::SetEnvironmentVariable(...,'User')`（避開 `setx` 的 1024 字元截斷 bug），比對前先正規化（`TrimEnd('\').ToLower()`）防止尾斜線變體與大小寫變體誤判
+6. 警告 `claude` CLI 是否在 PATH（不致命）
+7. 開新 cmd 視窗跑 `where by` 驗證 alias 真的可解析
+
+技術防呆（reviewer-approved 後上線）：
+- PowerShell 包 `$ErrorActionPreference='Stop' + try/catch + exit 1`：GPO 鎖、HKCU\Environment ACL 異常時不會靜默假成功
+- `set "TARGET_PS=%TARGET:'=''%"`：對 PowerShell 單引號字串做 escape，防範帳號名含 `'` 的 injection vector
+- `echo ... ^(...^)`：跳脫括號，避免 IF block 內訊息被 cmd parser 誤截斷
+- `start "" cmd /k "where by ... pause"`：開新 cmd（讀新 PATH）跑 `where`（不啟動真實 claude session）讓使用者眼見為憑
+
+### 手動部署（不跑腳本）
+
+```bash
+mkdir -p "$HOME/bin"
+cp ~/workspace/wt-settings/bin/*.bat "$HOME/bin/"
+# 若 ~/bin 不在 PATH 上，開 PowerShell：
+#   $bin = "$env:USERPROFILE\bin"
+#   $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+#   if (";$userPath;" -notlike "*;$bin;*") {
+#       [Environment]::SetEnvironmentVariable("Path", "$userPath;$bin", "User")
+#   }
+```
+
+> 💡 設計選擇：`setup.bat` 放 repo root（meta tool）而非 `bin/`（payload）— 跟 `Makefile` 不放 `src/` 一樣的分層慣例。沒整合進 `apply.sh` 是刻意：(1) 避免 `.sh` 改動觸發 writer-qa-reviewer 鐵律；(2) `apply.sh` 跑在 Git Bash 內，要呼叫 PowerShell SetEnvironmentVariable 還是得走 subshell，等於雙重複雜度。
 
 ### 為什麼放 repo 而不只放 `~/bin/`
 

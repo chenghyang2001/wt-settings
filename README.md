@@ -131,7 +131,18 @@ powershell -ExecutionPolicy Bypass -File ~/workspace/wt-settings/regen-lnk.ps1
 |-------|------|
 | `by` | `claude --continue --permission-mode bypassPermissions %*` — 接續上次對話 + 跳過權限提示 |
 
-新 PC 部署：
+### 一鍵部署（推薦）
+
+新 PC clone 完 repo 後，直接雙擊 `setup.bat` 或在 cmd 跑：
+
+```cmd
+cd %USERPROFILE%\workspace\wt-settings
+setup.bat
+```
+
+`setup.bat` 會：建 `~/bin` → copy `bin\*.bat` → 冪等補 user PATH（PowerShell 而非 setx，避開 1024 字元截斷 bug）→ 警告 `claude` CLI 是否存在 → 開新 cmd 跑 `where by` 驗證部署成功。重跑兩次行為一致。
+
+### 手動部署（若不想跑腳本）
 
 ```bash
 mkdir -p "$HOME/bin"
