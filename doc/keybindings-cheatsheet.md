@@ -16,6 +16,10 @@
 | `Alt+→` | MoveFocusRight | 焦點移到右邊的 pane |
 | `Alt+↑` | MoveFocusUp | 焦點移到上面的 pane |
 | `Alt+↓` | MoveFocusDown | 焦點移到下面的 pane |
+| `Alt+H` | MoveFocusLeft | 同 `Alt+←`（vim hjkl 風格，2026-04-26 加） |
+| `Alt+J` | MoveFocusDown | 同 `Alt+↓`（vim hjkl 風格） |
+| `Alt+K` | MoveFocusUp | 同 `Alt+↑`（vim hjkl 風格） |
+| `Alt+L` | MoveFocusRight | 同 `Alt+→`（vim hjkl 風格） |
 | `Alt+Shift+←` | ResizePaneLeft | 當前 pane 朝左擴張 |
 | `Alt+Shift+→` | ResizePaneRight | 當前 pane 朝右擴張 |
 | `Alt+Shift+↑` | ResizePaneUp | 當前 pane 朝上擴張 |

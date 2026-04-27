@@ -165,7 +165,7 @@ powershell -ExecutionPolicy Bypass -File ~/workspace/wt-settings/regen-lnk.ps1
 - `keybindings: Terminal.MarkMode (ctrl+shift+m)` — 鍵盤滾動 scrollback，免用滑鼠
 
 ### Pane 操作（觀測多 agent 必備）
-- `Terminal.MoveFocus{Left,Right,Up,Down}` 綁 `alt+方向鍵` — pane 焦點切換
+- `Terminal.MoveFocus{Left,Right,Up,Down}` 綁 `alt+方向鍵` **+ `alt+hjkl`**（vim 風格，2026-04-26 加；兩組共存） — pane 焦點切換
 - `Terminal.ResizePane{Left,Right,Up,Down}` 綁 `alt+shift+方向鍵` — 動態調整 pane 大小
 - `Terminal.TogglePaneZoom` 綁 `alt+z` — 暫時放大單一 pane 全螢幕，再按一次回到 multi-pane
 
