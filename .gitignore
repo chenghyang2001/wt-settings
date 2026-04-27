@@ -4,6 +4,10 @@ state.json
 .DS_Store
 Thumbs.db
 
+# Python
+__pycache__/
+*.pyc
+
 # Windows shortcut 含機器特定絕對路徑，換機後重建
 wt-settings.lnk
 
